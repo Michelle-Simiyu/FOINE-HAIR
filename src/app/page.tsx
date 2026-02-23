@@ -1,101 +1,120 @@
-import Image from "next/image";
+import Link from "next/link";
+import ProductGallery from "@/components/gallery/ProductGallery";
+import { ArrowRight, Gem, Zap, MapPin } from "lucide-react";
 
-export default function Home() {
+// ─── Stat ─────────────────────────────────────────────────────────────────────
+function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="text-center">
+      <p className="text-gold-400 font-bold text-xl tracking-wide">{value}</p>
+      <p className="text-ivory/30 text-[10px] tracking-widest uppercase mt-0.5">{label}</p>
+    </div>
+  );
+}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+function Hero() {
+  return (
+    <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+      {/* Background grid */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(212,146,14,1) 1px, transparent 1px), linear-gradient(90deg, rgba(212,146,14,1) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
+
+      {/* Gold accent line top */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gold-600" />
+
+      {/* Content */}
+      <div className="relative z-10 max-w-3xl">
+        <p className="text-gold-500 text-[11px] tracking-[0.45em] uppercase mb-6 animate-fade-in">
+          Nairobi&apos;s Premier Custom Wig Atelier
+        </p>
+
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-semibold text-ivory leading-none tracking-tight mb-6 animate-slide-up">
+          Your Wig.
+          <br />
+          <span className="text-gold-gradient">Your Rules.</span>
+        </h1>
+
+        <p className="text-ivory/50 text-base sm:text-lg max-w-xl mx-auto leading-relaxed mb-10 animate-fade-in">
+          Design a bespoke, hand-crafted wig from scratch — choosing every strand,
+          every knot, every inch. Real-time rendering. Nairobi delivery.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up">
+          <Link href="/configurator" className="btn-gold px-10 py-4 text-sm tracking-[0.2em]">
+            Start Building
+            <ArrowRight size={16} />
+          </Link>
+          <a href="#gallery" className="btn-ghost px-10 py-4 text-sm tracking-[0.2em]">
+            Browse Looks
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+
+      {/* Stats */}
+      <div className="absolute bottom-10 left-0 right-0 flex justify-center gap-12 px-4">
+        <Stat value="500+"    label="Wigs Crafted"       />
+        <Stat value="4.9★"   label="Customer Rating"     />
+        <Stat value="3–5 Days" label="Nairobi Delivery"  />
+      </div>
+    </section>
+  );
+}
+
+// ─── Features ─────────────────────────────────────────────────────────────────
+function Features() {
+  const features = [
+    {
+      Icon:  Gem,
+      title: "Luxury Craftsmanship",
+      body:  "Each wig is hand-knotted by master artisans using Grade 9A+ raw hair.",
+    },
+    {
+      Icon:  Zap,
+      title: "Live Visual Builder",
+      body:  "See your wig rendered in real time as you configure each detail.",
+    },
+    {
+      Icon:  MapPin,
+      title: "Nairobi Delivery",
+      body:  "Same-day CBD delivery. G4S upcountry. M-Pesa accepted.",
+    },
+  ];
+
+  return (
+    <section className="py-20 border-t border-gold-800/20 bg-white/[0.01]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-3 gap-10">
+        {features.map(({ Icon, title, body }) => (
+          <div key={title} className="text-center group">
+            <div className="inline-flex items-center justify-center w-12 h-12 border border-gold-700/40 text-gold-500 mb-5 group-hover:border-gold-500 transition-colors">
+              <Icon size={20} />
+            </div>
+            <h3 className="text-ivory font-semibold text-sm tracking-widest uppercase mb-2">
+              {title}
+            </h3>
+            <p className="text-ivory/40 text-xs leading-relaxed">{body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+export default function HomePage() {
+  return (
+    <main>
+      <Hero />
+      <Features />
+      <div id="gallery">
+        <ProductGallery />
+      </div>
+    </main>
   );
 }

@@ -1,0 +1,106 @@
+// ─── Prisma Schema — Foine Hair (Production) ──────────────────────────────────
+// Setup:
+//   npx prisma init --datasource-provider postgresql
+//   npx prisma db push && npx prisma generate
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Order ─────────────────────────────────────────────────────────────────────
+model Order {
+  id               String   @id @default(cuid())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // The complete "Wig Recipe" — exact WigConfiguration JSON snapshot
+  configurationJSON Json
+
+  // Customer contact, delivery address, notes
+  customerDetails  Json
+
+  // Pricing snapshot at time of order
+  priceBreakdown   Json
+
+  // Payment
+  paymentStatus    PaymentStatus @default(PENDING)
+  mpesaReceiptNo   String?
+  stripePaymentId  String?
+  paidAt           DateTime?
+
+  // Fulfillment
+  orderStatus      OrderStatus @default(PENDING)
+  shippingZone     String
+  wigName          String?
+
+  // Status history — array of { status, changedAt, changedBy, note? }
+  statusHistory    Json      @default("[]")
+
+  // Operational fields
+  deliveryEstimate DateTime?
+  adminNotes       String?
+  internalRef      String?   // e.g. production batch ID
+
+  // Relations
+  auditLogs        AuditLog[]
+
+  @@index([orderStatus])
+  @@index([paymentStatus])
+  @@index([createdAt])
+  @@index([shippingZone])
+}
+
+// ─── AuditLog ─────────────────────────────────────────────────────────────────
+// Immutable record of every admin action taken on an order.
+model AuditLog {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  action     String   // e.g. "STATUS_CHANGED", "NOTE_ADDED", "PAYMENT_VERIFIED"
+  actorId    String   // admin identifier (email or ID)
+  before     Json?    // state before change
+  after      Json?    // state after change
+  meta       Json?    // any extra metadata
+
+  @@index([orderId])
+  @@index([createdAt])
+  @@index([actorId])
+}
+
+// ─── AdminSession ─────────────────────────────────────────────────────────────
+// Tracks active admin sessions for JWT revocation (optional, stateless JWT works without this)
+model AdminSession {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+  adminEmail String
+  isRevoked  Boolean  @default(false)
+
+  @@index([adminEmail])
+  @@index([expiresAt])
+}
+
+// ─── Enums ─────────────────────────────────────────────────────────────────────
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  IN_PRODUCTION
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}

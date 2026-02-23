@@ -3,25 +3,71 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #f5f4ef;
+  --gold:        #d4920e;
+  --gold-light:  #e9ae2e;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color:       var(--foreground);
+  background:  var(--background);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Gold divider line */
+.gold-line {
+  @apply h-px w-full bg-gold-600;
+}
+
+/* Luxury card */
+.luxury-card {
+  @apply border border-gold-800/30 bg-white/5 backdrop-blur-sm rounded-none;
+}
+
+/* Gold button */
+.btn-gold {
+  @apply inline-flex items-center justify-center gap-2
+         bg-gold-gradient text-obsidian font-semibold tracking-wider
+         px-8 py-3 transition-all duration-200
+         hover:brightness-110 active:scale-[0.98]
+         disabled:opacity-40 disabled:cursor-not-allowed;
+}
+
+/* Ghost button */
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2
+         border border-gold-700/60 text-gold-400 font-medium tracking-wider
+         px-8 py-3 transition-all duration-200
+         hover:border-gold-500 hover:text-gold-300
+         active:scale-[0.98];
+}
+
+/* Scrollbar */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #d4920e; border-radius: 2px; }
+
+/* Selection */
+::selection { background: rgba(212,146,14,0.3); color: #f5f4ef; }
+
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .text-balance { text-wrap: balance; }
+
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #d4920e, #e9ae2e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
